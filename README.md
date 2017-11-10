@@ -1,2 +1,2 @@
-# yzx
-My first repository on GitHub
+# CS526
+Algorithms Problems in CS526
