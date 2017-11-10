@@ -51,6 +51,21 @@ public class Solution {
         System.out.print(matrix[1][2]);
 
     }
+    public static void search(int[][] mat, int source){
+
+    }
+
+    public static int getIndexOfMax(int[] arr){
+        int max = 0;
+        int idx = 0;
+        for (int i = 0; i < arr.length; i ++){
+            if (arr[i] > max) {
+                max = arr[i];
+                idx = i;
+            }
+        }
+        return idx;
+    }
 }
 ```
 
