@@ -28,44 +28,88 @@ For each city V from 2 to N, print the maximum height of a truck that can travel
 
 Your output is N-1 integers, separated by spaces.
 
-## Solution
-
+## Solution(not perfect)
 ```java
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
 import java.util.Scanner;
 
 public class Solution {
+
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
         int m = in.nextInt();
         int[][] matrix = new int[n][n];
         for (int i = 0; i < m; i++){
-            for (int j = 0; j < 3; j ++){
-                int s = in.nextInt();
-                int t = in.nextInt();
-                matrix[s][t] = in.nextInt();
-                matrix[t][s] = matrix[s][t];
+            int s = in.nextInt() - 1;
+            int t = in.nextInt() - 1;
+            int h = in.nextInt();
+            if (s != t){
+                if (h > matrix[s][t]){
+                    matrix[s][t] = h;
+                    matrix[t][s] = matrix[s][t];
+                }
             }
         }
         in.close();
-        System.out.print(matrix[1][2]);
+        Routes r = new Routes(matrix,n);
+        for (int i = 0 ; i < n; i ++){
+            int[] max = r.getMaxIndex();
+            r.update(max[0],max[1]);
+        }
+        int[] result = r.getResult();
+        for (int i = 1; i < n-1; i++){
+            System.out.print(result[i]+" ");
+        }
+        System.out.print(result[n-1]);
 
     }
-    public static void search(int[][] mat, int source){
+    static class Routes{
+        int[][] matrix = null;
+        int[] mask = null;
+        int[] result = null;
+        int len = 0;
+        public Routes(int[][] x, int n){
+            this.matrix = x;
+            this.len = n;
+            this.mask = new int[n];
+            this.mask[0] = 1;
+            this.result = x[0];
+        }
+        public int[] getResult(){
+            return this.result;
+        }
 
-    }
-
-    public static int getIndexOfMax(int[] arr){
-        int max = 0;
-        int idx = 0;
-        for (int i = 0; i < arr.length; i ++){
-            if (arr[i] > max) {
-                max = arr[i];
-                idx = i;
+        public int[] getMaxIndex(){
+            int[] max = new int[2];
+            for (int i = 1; i < this.len; i ++){
+                if (this.mask[i] == 0){
+                    if (this.matrix[0][i] > max[1]) {
+                        max[1] = this.matrix[0][i];
+                        max[0] = i;
+                    }
+                }
+            }
+            return max;
+        }
+        public void update(int row, int value){
+            this.mask[row] = 1;
+            for (int i = 1 ; i < this.len; i ++){
+                if (this.matrix[row][i] > this.result[i]){
+                    if (this.matrix[row][i] > value){
+                        this.result[i] = value;
+                    }else{
+                        this.result[i] = this.matrix[row][i];
+                    }
+                }
             }
         }
-        return idx;
     }
+
 }
 ```
 
