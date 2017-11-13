@@ -1,34 +1,4 @@
-There are N cities, and you want to send trucks from your factory (in city 1) to the other cities, the taller the better. There are M two-way roads connecting pairs of cities. Each road has a maximum truck height, determined by bridges and tunnels along the way. For each city V, you want to work out the maximum height of a truck that can travel from city 1 to city V. You do not care about the length of the route, just the best height.
-
-### Input Format
-
-The first line is "N M", where N is the number cities, and M is the number of roads.
-
-Each of the next M lines is "U V H". It describes a road between cities U and V, with max truck height H.
-
-### Constraints
-
-All inputs are positive integers.
-
-1 ≤ N ≤ 50000
-1 ≤ M ≤ 200000
-1 ≤ U ≤ N
-1 ≤ V ≤ N
-1 ≤ H ≤ 1000
-
-### Notes
-
-Possibly U=V (such roads are useless). If there are multiple roads between two cities, use the best road.
-
-This has a solution resembling Dijkstra's algorithm, running in similar time bounds.
-
-### Output Format
-
-For each city V from 2 to N, print the maximum height of a truck that can travel from city 1 to city V. Or if there is no path from 1 to V, print 0.
-
-Your output is N-1 integers, separated by spaces.
-
-## Solution(not perfect)
+# Solution(to be continue)
 ```java
 import java.io.*;
 import java.util.*;
@@ -112,6 +82,38 @@ public class Solution {
 
 }
 ```
+# Problem Decription (https://www.hackerrank.com/contests/cs526f17/challenges/tall-trucks)
+There are N cities, and you want to send trucks from your factory (in city 1) to the other cities, the taller the better. There are M two-way roads connecting pairs of cities. Each road has a maximum truck height, determined by bridges and tunnels along the way. For each city V, you want to work out the maximum height of a truck that can travel from city 1 to city V. You do not care about the length of the route, just the best height.
+
+### Input Format
+
+The first line is "N M", where N is the number cities, and M is the number of roads.
+
+Each of the next M lines is "U V H". It describes a road between cities U and V, with max truck height H.
+
+### Constraints
+
+All inputs are positive integers.
+
+1 ≤ N ≤ 50000
+1 ≤ M ≤ 200000
+1 ≤ U ≤ N
+1 ≤ V ≤ N
+1 ≤ H ≤ 1000
+
+### Notes
+
+Possibly U=V (such roads are useless). If there are multiple roads between two cities, use the best road.
+
+This has a solution resembling Dijkstra's algorithm, running in similar time bounds.
+
+### Output Format
+
+For each city V from 2 to N, print the maximum height of a truck that can travel from city 1 to city V. Or if there is no path from 1 to V, print 0.
+
+Your output is N-1 integers, separated by spaces.
+
+
 
 ```
 Sample Input 0
