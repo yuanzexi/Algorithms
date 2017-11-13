@@ -175,9 +175,7 @@ public class Solution {
 }
 
 ```
-
-
-## Problem Description
+# Problem Description (https://www.hackerrank.com/contests/cs526f17/challenges/fast-fourier-mod-p)
 We are given an odd prime P, and N, a power of two that is less than P. We are also given W, an N-th root of one mod P. That is, W is an integer such that WN mod P (its remainder after dividing by P) equals one.
 
 We are also given a polynomial A(x) with integer coefficients and degree less than N:
