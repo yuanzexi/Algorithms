@@ -1,5 +1,6 @@
 # Solution(to be continue)
 ```java
+package com.company;
 import java.io.*;
 import java.util.*;
 import java.text.*;
@@ -13,72 +14,142 @@ public class Solution {
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
         int m = in.nextInt();
-        int[][] matrix = new int[n][n];
+        Map<Integer,Path> map = new HashMap<>();
+        //int[][] matrix = new int[n][n];
         for (int i = 0; i < m; i++){
             int s = in.nextInt() - 1;
             int t = in.nextInt() - 1;
             int h = in.nextInt();
             if (s != t){
-                if (h > matrix[s][t]){
-                    matrix[s][t] = h;
-                    matrix[t][s] = matrix[s][t];
-                }
+                insert(map,s,t,h);
             }
         }
         in.close();
-        Routes r = new Routes(matrix,n);
-        for (int i = 0 ; i < n; i ++){
-            int[] max = r.getMaxIndex();
-            r.update(max[0],max[1]);
+//        for (Map.Entry<Integer,Path> entry:map.entrySet()) {
+//            System.out.println(entry.getKey());
+//            System.out.println(entry.getValue().toString());
+//        }
+        Decision decision = new Decision(n);
+        decision.update(map.get(0),Integer.MAX_VALUE);
+        int num = map.keySet().size() - 1;
+        while (num > 0){
+            int[] max = decision.getMaxIndex();
+//            System.out.println("i:"+max[0]+",value:"+max[1]);
+            decision.update(map.get(max[0]),max[1]);
+            num--;
         }
-        int[] result = r.getResult();
-        for (int i = 1; i < n-1; i++){
+
+        int[] result = decision.getResult();
+        for (int i = 1; i < n; i++){
             System.out.print(result[i]+" ");
         }
-        System.out.print(result[n-1]);
 
     }
-    static class Routes{
-        int[][] matrix = null;
-        int[] mask = null;
-        int[] result = null;
-        int len = 0;
-        public Routes(int[][] x, int n){
-            this.matrix = x;
-            this.len = n;
-            this.mask = new int[n];
-            this.mask[0] = 1;
-            this.result = x[0];
+    public static void insert(Map<Integer,Path> map, int s, int t, int h){
+//        System.out.println( map.keySet().toString());
+        if (!map.keySet().contains(t)) {
+            Path p = new Path(t);
+            map.put(t,p);
         }
-        public int[] getResult(){
-            return this.result;
+        if (!map.keySet().contains(s)) {
+            Path p = new Path(s);
+            map.put(s,p);
+        }
+        int temp = (map.get(s).getEnds().indexOf(t));
+        int temp2 = map.get(t).getEnds().indexOf(s);
+        if (temp > -1){
+            if (map.get(s).getHightes().get(temp) < h){
+                map.get(s).getHightes().set(temp,h);
+                map.get(t).getHightes().set(temp2,h);
+            }
+        }else{
+            map.get(s).add(t,h);
+            map.get(t).add(s,h);
         }
 
+    }
+    static class Decision{
+        int[] result = null;
+        int[] mask = null;
+        int len = 0;
+        public Decision(int n){
+            this.len = n;
+            this.result = new int[n];
+            this.mask = new int[n];
+
+        }
+
+        public int[] getResult() {
+            return result;
+        }
+
+        public void update(Path p, int value){
+            this.mask[p.getStart()] = 1;
+            for (int i = 0; i < p.getEnds().size(); i ++){
+                int k = p.ends.get(i);
+                int h = p.hightes.get(i);
+                if (this.mask[k] == 0){
+                    if (h > this.result[k]){
+                        if (h > value){
+                            this.result[k] = value;
+                        }else{
+                            this.result[k] = h;
+                        }
+                    }
+                }
+            }
+        }
         public int[] getMaxIndex(){
             int[] max = new int[2];
-            for (int i = 1; i < this.len; i ++){
+            for (int i = 1; i < this.mask.length; i ++){
                 if (this.mask[i] == 0){
-                    if (this.matrix[0][i] > max[1]) {
-                        max[1] = this.matrix[0][i];
+                    if (this.result[i] > max[1]) {
+                        max[1] = this.result[i];
                         max[0] = i;
                     }
                 }
             }
             return max;
         }
-        public void update(int row, int value){
-            this.mask[row] = 1;
-            for (int i = 1 ; i < this.len; i ++){
-                if (this.matrix[row][i] > this.result[i]){
-                    if (this.matrix[row][i] > value){
-                        this.result[i] = value;
-                    }else{
-                        this.result[i] = this.matrix[row][i];
-                    }
-                }
+    }
+
+    static class Path{
+        int start = 0;
+        List<Integer> hightes = null;
+        List<Integer> ends = null;
+        public Path(int start){
+            this.start = start;
+            this.hightes =  new LinkedList<>();
+            this.ends = new LinkedList<>();
+        }
+
+        public int getStart() {
+            return start;
+        }
+
+        @Override
+        public String toString() {
+            String s = "";
+            for (int i = 0; i < this.ends.size(); i++){
+               s += ("end:"+this.ends.get(i)+", height:"+this.hightes.get(i)+"\n");
             }
+            return s;
+        }
+
+        public void add(int e, int h){
+            this.ends.add(e);
+            this.hightes.add(h);
+        }
+
+        public List<Integer> getEnds() {
+            return ends;
+        }
+
+        public List<Integer> getHightes() {
+            return hightes;
         }
     }
+
 
 }
 ```
