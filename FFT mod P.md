@@ -1,180 +1,97 @@
-# Solution (to be continued)
+# Solution (Python)
+```python
+#!/bin/python
+
+import sys
+
+
+p,n,w = raw_input().strip().split(' ')
+p,n,w = [int(p),int(n),int(w)]
+a = map(int, raw_input().strip().split(' '))
+
+def printArr(a,p):
+    for i in range(len(a)):
+        print a[i] % p,
+def recursiveFFT(a, w, p):
+    n = len(a)
+    if n == 1:
+        return a
+    w0 = 1
+    a0 = a[::2]
+    a1 = a[1::2]
+    y0 = recursiveFFT(a0, (w*w)%p, p)
+    y1 = recursiveFFT(a1, (w*w)%p, p)
+    y = a[:]
+    for k in range(n/2):
+        y[k] = (y0[k] + w0 * y1[k]) % p
+        if w == 1:
+            y[k+n/2] = (y0[k] + w0 * y1[k] + p) % p
+        else:
+            y[k+n/2] = (y0[k] - w0 * y1[k] + p) % p
+        w0 = (w0 * w % p)
+    return y
+    
+    
+c = recursiveFFT(a,w,p)
+printArr(c,p)
+```
+
+# Solution (java)
 ```java
-package FFT;
+
 import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int p = in.nextInt();
+        long p = in.nextInt();
         int n = in.nextInt();
-        int w = in.nextInt();
+        long w = in.nextInt();
         long[] a = new long[n];
         for(int a_i=0; a_i < n; a_i++){
             a[a_i] = in.nextInt();
         }
-//        n = extractN(p,n,w+p);
-//        System.out.println(log(8));
-        a = iterFFT(a,p,n,w+p);
+        a = recursiveFFT(a,p,w);
         printArray(a,p);
-//        long[] b = new long[n];
-//        for (int i=0; i < n; i++){
-//            b[i] = calc(a, p, i, w);
-//            System.out.print(b[i]+" ");
-//        }
     }
-    private static int extractN(int p, int n, int w){
-        Set set = new LinkedHashSet();
-        long temp_w = 1;
-        while (n > 0){
-            temp_w = (w*temp_w) % p;
-            set.add(temp_w);
-            n --;
-        }
-        print(set.toString());
-        print(set.size()+"");
-        return set.size();
-    }
-    private static int log(int a){
-        int count = 0;
-        while (a > 1){
-            a /= 2;
-            count++;
-        }
-        return count;
-    }
-    public static long[] iterFFT(long[] a, int p, int n, int w){
-        a = bitReverse(a);
-        int s = log(n);
-        for (int i = 1; i <= s; i++){
-//            print("i = "+i +"");
-            int m = (int)pow(2,i,Integer.MAX_VALUE);
-//            System.out.println(m);
-            for (int k = 0; k < n; k+=m){
-//                System.out.println("k="+k);
-                long temp_w = 1;
-                for (int j = 0; j < m/2; j ++){
-                    long t = temp_w * (a[(k+j+m/2)]);
-                    long t2 = (p - temp_w) *  (a[(k+j+m/2)]);
-                    long u = (a[k+j]);
-//                    print("t="+t+",u="+u);
-                    a[k+j] = (u + t);
-                    long temp = (u + t2);
-//                    print("temp = "+temp);
-                    a[k+j+m/2] = temp;
-                    temp_w = (temp_w * w ) % p;
-//                    print("");
-//                    print("w = "+temp_w);
-//                    printArray(a,p);
-//                    print("");
-                }
-            }
-        }
-        return a;
-    }
-    private static void print(String a){
-        System.out.println(a);
-    }
-    private static void printArray(long[] a, int p){
+    private static void printArray(long[] a, long p){
         for (int i = 0 ; i < a.length; i++){
-            System.out.print((a[i]%p)+" ");
+            System.out.print((a[i])+" ");
         }
     }
-    private static long[] bitReverse(long[] a) {
+    private static long[] recursiveFFT(long[] a, long p,  long w){
         int n = a.length;
-        int m = log(n);
-        long[] b = new long[n];
-        for (int i = 0; i < n; i++){
-            int r = reverse(i,m);
-            b[i]= a[r];
+        if (n == 1) {
+            return a;
         }
-        return b;
-    }
-
-    private static int reverse(int a,int m){
-        int b = 0;
-        while (m > 0){
-            b <<= 1;
-            b |= (a & 1);
-            a >>= 1;
-            m--;
-        }
-        return b;
-    }
-
-    public static long pow(long a, long b, int p){
-        long init = 1;
-        long bound = Long.MAX_VALUE/a/a;
-        while (b > 0){
-            init = init * a;
-            if (init > bound){
-                init = init % p;
+        long w0 = 1;
+        long[] a0 = extractArray(a,0,2);
+        long[] a1 = extractArray(a,1,2);
+        long[] y0 = recursiveFFT(a0, p,((w * w)%p));
+        long[] y1 = recursiveFFT(a1, p,((w * w)%p));
+        long[] y = new long[n];
+        for (int k = 0; k < n/2; k++){
+            y[k] = (y0[k] + w0 * y1[k] % p) % p;
+            if (w == 1){
+                y[k+n/2] = (y0[k] + w0 * y1[k] % p + p) % p;
             }
-            b--;
+            else {
+                y[k+n/2] = (y0[k] - w0 * y1[k] % p+ p) % p;
+            }
+            w0 = ((w0 * w )% p);
         }
-        return init;
+        return y;
     }
-
-    public static long calc(int[] a, int p, int n, int w){
-        long result = 0;
-        long base = pow(w,n,p);
-        base = base % p;
-        for (int i =0; i < a.length; i++){
-            result += a[i]*(pow(base,i,p));
+    private static long[] extractArray(long[] arr, int start, int space){
+        long[] newArr = new long[arr.length / space];
+        int k = 0;
+        for (int i = start; i < arr.length; i += space){
+            newArr[k++] = arr[i];
         }
-        result = result % p;
-        return (result);
+        return newArr;
     }
 }
 ```
-# Solution 2 (High computational complexity, timed out)
-```java
-import java.io.*;
-import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
 
-public class Solution {
-
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int p = in.nextInt();
-        int n = in.nextInt();
-        int w = in.nextInt();
-        int[] a = new int[n];
-        for(int a_i=0; a_i < n; a_i++){
-            a[a_i] = in.nextInt();
-        }
-        long[] b = new long[n];
-        for (int i=0; i < n; i++){
-            b[i] = calc(a, p, i, w);
-            System.out.print(b[i]+" ");
-        }
-    }
-
-    public static long pow(long a, long b, int p){
-        long init = 1;
-        while (b > 0){
-            init = init * a;
-            init = init % p;
-            b--;
-        }
-        return init;
-    }
-
-    public static long calc(int[] a, int p, int n, int w){
-        long result = 0;
-        long base = pow(w,n,p);
-        base = base % p;
-        for (int i =0; i < a.length; i++){
-            result += a[i]*(pow(base,i,p));
-        }
-        result = result % p;
-        return (result);
-    }
-}
-
-```
 # Problem Description (https://www.hackerrank.com/contests/cs526f17/challenges/fast-fourier-mod-p)
 We are given an odd prime P, and N, a power of two that is less than P. We are also given W, an N-th root of one mod P. That is, W is an integer such that WN mod P (its remainder after dividing by P) equals one.
 
