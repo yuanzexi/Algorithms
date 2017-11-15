@@ -47,25 +47,23 @@ public class Solution {
     }
     public static void insert(Map<Integer,Path> map, int s, int t, int h){
 //        System.out.println( map.keySet().toString());
-        if (!map.keySet().contains(t)) {
-            Path p = new Path(t);
-            map.put(t,p);
-        }
-        if (!map.keySet().contains(s)) {
+        Path ps = null;
+        Path pt = null;
+        ps = map.get(s);
+        if (ps == null){
             Path p = new Path(s);
             map.put(s,p);
+            ps = map.get(s);
         }
-        int temp = (map.get(s).getEnds().indexOf(t));
-        int temp2 = map.get(t).getEnds().indexOf(s);
-        if (temp > -1){
-            if (map.get(s).getHightes().get(temp) < h){
-                map.get(s).getHightes().set(temp,h);
-                map.get(t).getHightes().set(temp2,h);
-            }
-        }else{
-            map.get(s).add(t,h);
-            map.get(t).add(s,h);
+        pt = map.get(t);
+        if (pt == null){
+            Path p = new Path(t);
+            map.put(t,p);
+            pt = map.get(t);
         }
+
+        ps.add(t,h);
+        pt.add(s,h);
 
     }
     static class Decision{
