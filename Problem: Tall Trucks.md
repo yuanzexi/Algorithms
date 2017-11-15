@@ -151,6 +151,99 @@ public class Solution {
 
 }
 ```
+```java
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int m = in.nextInt();
+        //int[][] matrix = new int[n][n];
+        LinkedList<Integer[]>[] vts = new LinkedList[n];
+        for (int i = 0; i < m; i++){
+            int s = in.nextInt() - 1;
+            int t = in.nextInt() - 1;
+            int h = in.nextInt();
+            if (s != t){
+                if (vts[s] == null){
+                    vts[s] = new LinkedList<>();
+                }
+                vts[s].add(new Integer[]{t,h});
+                if (vts[t] == null){
+                    vts[t] = new LinkedList<>();
+                }
+                vts[t].add(new Integer[]{s,h});
+            }
+        }
+        in.close();
+        int[] mask = new int[n];
+        int[] result = new int[n];
+        for (Integer[] arr: vts[0]) {
+            if (result[arr[0]] < arr[1]){
+                result[arr[0]] = arr[1];
+            }
+        }
+        int[] max = getMaxIndex(mask,result);
+        mask[max[0]] = 1;
+        while (max[1] > 0){
+            for (Integer[] arr: vts[max[0]]){
+                if (mask[arr[0]] == 0){
+                    if (result[arr[0]] < arr[1]){
+                        if (max[1] < arr[1]){
+                            result[arr[0]] = max[1];
+                        }else{
+                            result[arr[0]] = arr[1];
+                        }
+                    }
+                }
+            }
+            max = getMaxIndex(mask,result);
+            mask[max[0]] = 1;
+        }
+        for (int i = 1; i < n; i++){
+            System.out.print(result[i]+" ");
+        }
+
+    }
+    public static int[] getMaxIndex(int[] mask,int[] result){
+        int[] max = new int[2];
+        for (int i = 1; i < mask.length; i ++){
+            if (mask[i] == 0){
+                if (result[i] > max[1]) {
+                    max[1] = result[i];
+                    max[0] = i;
+                }
+            }
+        }
+        return max;
+    }
+    static class Vertex{
+        int index = 0;
+        int height = 0;
+        public Vertex(int index, int height){
+            this.index = index;
+            this.height = height;
+        }
+        public int getHeight() {
+            return this.height;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
+
+
+}
+```
+
 # Problem Decription (https://www.hackerrank.com/contests/cs526f17/challenges/tall-trucks)
 There are N cities, and you want to send trucks from your factory (in city 1) to the other cities, the taller the better. There are M two-way roads connecting pairs of cities. Each road has a maximum truck height, determined by bridges and tunnels along the way. For each city V, you want to work out the maximum height of a truck that can travel from city 1 to city V. You do not care about the length of the route, just the best height.
 
