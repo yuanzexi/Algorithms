@@ -1,155 +1,41 @@
-# Solution(to be continue)
-```java
-package com.company;
-import java.io.*;
-import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
-import java.util.Scanner;
+# Solution (Use heapq!)
+```python
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+import sys
+import heapq
 
-public class Solution {
-
-    public static void main(String[] args){
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        int m = in.nextInt();
-        Map<Integer,Path> map = new HashMap<>();
-        //int[][] matrix = new int[n][n];
-        for (int i = 0; i < m; i++){
-            int s = in.nextInt() - 1;
-            int t = in.nextInt() - 1;
-            int h = in.nextInt();
-            if (s != t){
-                insert(map,s,t,h);
-            }
-        }
-        in.close();
-//        for (Map.Entry<Integer,Path> entry:map.entrySet()) {
-//            System.out.println(entry.getKey());
-//            System.out.println(entry.getValue().toString());
-//        }
-        Decision decision = new Decision(n);
-        decision.update(map.get(0),Integer.MAX_VALUE);
-        int num = map.keySet().size() - 1;
-        while (num > 0){
-            int[] max = decision.getMaxIndex();
-//            System.out.println("i:"+max[0]+",value:"+max[1]);
-            decision.update(map.get(max[0]),max[1]);
-            num--;
-        }
-
-        int[] result = decision.getResult();
-        for (int i = 1; i < n; i++){
-            System.out.print(result[i]+" ");
-        }
-
-    }
-    public static void insert(Map<Integer,Path> map, int s, int t, int h){
-//        System.out.println( map.keySet().toString());
-        Path ps = null;
-        Path pt = null;
-        ps = map.get(s);
-        if (ps == null){
-            Path p = new Path(s);
-            map.put(s,p);
-            ps = map.get(s);
-        }
-        pt = map.get(t);
-        if (pt == null){
-            Path p = new Path(t);
-            map.put(t,p);
-            pt = map.get(t);
-        }
-
-        ps.add(t,h);
-        pt.add(s,h);
-
-    }
-    static class Decision{
-        int[] result = null;
-        int[] mask = null;
-        int len = 0;
-        public Decision(int n){
-            this.len = n;
-            this.result = new int[n];
-            this.mask = new int[n];
-
-        }
-
-        public int[] getResult() {
-            return result;
-        }
-
-        public void update(Path p, int value){
-            this.mask[p.getStart()] = 1;
-            for (int i = 0; i < p.getEnds().size(); i ++){
-                int k = p.ends.get(i);
-                int h = p.hightes.get(i);
-                if (this.mask[k] == 0){
-                    if (h > this.result[k]){
-                        if (h > value){
-                            this.result[k] = value;
-                        }else{
-                            this.result[k] = h;
-                        }
-                    }
-                }
-            }
-        }
-        public int[] getMaxIndex(){
-            int[] max = new int[2];
-            for (int i = 1; i < this.mask.length; i ++){
-                if (this.mask[i] == 0){
-                    if (this.result[i] > max[1]) {
-                        max[1] = this.result[i];
-                        max[0] = i;
-                    }
-                }
-            }
-            return max;
-        }
-    }
-
-    static class Path{
-        int start = 0;
-        List<Integer> hightes = null;
-        List<Integer> ends = null;
-        public Path(int start){
-            this.start = start;
-            this.hightes =  new LinkedList<>();
-            this.ends = new LinkedList<>();
-        }
-
-        public int getStart() {
-            return start;
-        }
-
-        @Override
-        public String toString() {
-            String s = "";
-            for (int i = 0; i < this.ends.size(); i++){
-               s += ("end:"+this.ends.get(i)+", height:"+this.hightes.get(i)+"\n");
-            }
-            return s;
-        }
-
-        public void add(int e, int h){
-            this.ends.add(e);
-            this.hightes.add(h);
-        }
-
-        public List<Integer> getEnds() {
-            return ends;
-        }
-
-        public List<Integer> getHightes() {
-            return hightes;
-        }
-    }
-
-
-}
+if __name__ == "__main__":
+    n,m = map(int,raw_input().strip().split(' '))
+    path = [[] for _ in range(n+1)]
+    for p_i in xrange(m):
+        p_temp = map(int,raw_input().strip().split(' '))
+        path[p_temp[0]].append((p_temp[1],p_temp[2]))
+        path[p_temp[1]].append((p_temp[0],p_temp[2]))
+result = [0 for _ in range(n+1)]
+mask = [0 for _ in range(n+1)]
+q = [(0,1)]
+mask[1] = 1;
+while len(q) > 0:
+    (hv,v) = heapq.heappop(q)
+    #print q
+    #print 'hv:',hv,',v:',v
+    hv = -hv
+    if hv == result[v]:
+        mask[v] = 1
+        for (k,h) in path[v]:
+#            print 'k:',k,',h:',h
+            if mask[k] == 0:
+                if h > result[k]:
+                    if h > hv and hv > 0:
+                        result[k] = hv
+#                       print 'result[k]:',result[k],'hv:',hv
+                    else:
+                        result[k] = h
+                    heapq.heappush(q,(-result[k],k))
+#    print result
+#    print '--------'
+del result[0],result[0]
+print(' '.join(map(str,result)))
 ```
 ```java
 import java.io.*;
