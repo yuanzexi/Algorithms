@@ -92,14 +92,15 @@ public class Solution {
 }
 ```
 
-# Problem Description (https://www.hackerrank.com/contests/cs526f17/challenges/fast-fourier-mod-p)
+# Problem Description 
+## (https://www.hackerrank.com/contests/cs526f17/challenges/fast-fourier-mod-p by Michelangelo Grigni)
 We are given an odd prime P, and N, a power of two that is less than P. We are also given W, an N-th root of one mod P. That is, W is an integer such that WN mod P (its remainder after dividing by P) equals one.
 
 We are also given a polynomial A(x) with integer coefficients and degree less than N:
 
 A(x) = a0 + a1 x + a2 x2 + ... + aN-1 xN-1
 For each i≥0, define bi = A(Wi) mod P (an integer remainder in the range 0 to P-1). Our goal is to compute the N integers b0 b1 ... bN-1.
-
+```
 ## Input Format
 
 The input is two lines of space-separated integers. The first line has three integers:  P N W
@@ -196,3 +197,4 @@ In this example, W=1 is an N-th root of one, but not a primitive N-th root (that
 ### Sample Output 5
 
 65 29 30 55 10 38 79 73 21 92 46 35 36 33 78 8 30 1 65 93 23 52 48 25 0 21 94 19 95 21 76 63
+```
