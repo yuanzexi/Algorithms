@@ -37,6 +37,7 @@ while len(q) > 0:
 del result[0],result[0]
 print(' '.join(map(str,result)))
 ```
+## Solution (java with higher complexity)
 ```java
 import java.io.*;
 import java.util.*;
