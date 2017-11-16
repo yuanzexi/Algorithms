@@ -1,4 +1,4 @@
-# Solution 
+# Solution (java)
 ```java
 import java.io.*;
 import java.util.*;
@@ -71,60 +71,9 @@ public class Solution {
     }
 }
 ```
-# Solution 2 (Runtime Error)
-```python
-#!/bin/python
 
-import sys
-
-def calc(n,d,v):
-    copy_v = v[:]
-    s = {}
-    idx = range(len(v))
-    quicksort(copy_v,idx,0,len(v)-1)
-    
-    for i in idx:
-        insert(s, v, i, d[i]-1)
-    return sum(s.values())
-    
-
-def exchange(arr,i,j):
-    temp = arr[i]
-    arr[i] = arr[j]
-    arr[j] = temp
-def partition(arr,idx,p,r):
-    x = arr[r]
-    i = p-1
-    for j in range(p,r):
-        if arr[j] >= x:
-            i = i+1
-            exchange(arr,i,j)
-            exchange(idx,i,j)
-    exchange(arr,i+1,r)
-    exchange(idx,i+1,r)
-    return i+1
-def quicksort(arr,idx,p,r):
-    if p < r:
-        q = partition(arr,idx,p,r)
-        quicksort(arr,idx,p,q-1)
-        quicksort(arr,idx,q+1,r)
-    return
-def insert(s, v, i, j):
-    if j < 0:
-        return
-    if j in s.keys():
-        insert(s, v, i, j-1)
-    else:
-        s[j] = v[i]
-
-if __name__ == "__main__":
-    n = int(raw_input().strip())
-    d = map(int, raw_input().strip().split(' '))
-    v = map(int, raw_input().strip().split(' '))
-    print calc(n,d,v)
-```
-
-# Problem Description  (https://www.hackerrank.com/contests/cs526f17/challenges/unit-tasks/problem)
+# Problem Description  
+## (https://www.hackerrank.com/contests/cs526f17/challenges/unit-tasks/problem by Michelangelo Grigni)
 You have N tasks to perform in some order. Each task takes one minute. Task i has a deadline Di and a value Vi. If you finish task i within the first Di minutes, then the task is on-time and you earn a profit of Vi dollars. Otherwise the task is late, and you earn nothing for this task.
 
 A schedule is an ordering (or permutation) of the N tasks, and its value is the sum of the profits earned for its on-time tasks. Your goal is to find the maximum possible value of a schedule.
