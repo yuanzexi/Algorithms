@@ -63,11 +63,12 @@ print min(a,b)
 print max(a,b)
 ```
 
-# Problem Description(https://www.hackerrank.com/contests/cs526f17/challenges/bitonic-tsp/problem by Michelangelo Grigni)
+# Problem Description
+## (https://www.hackerrank.com/contests/cs526f17/challenges/bitonic-tsp/problem by Michelangelo Grigni)
 You are given N points in the plane, with increasing x coordinates. A bitonic tour is cyclic tour visiting all the points, with two parts. The first part of the tour goes left to right, from the leftmost point to the rightmost, visiting some of the points. The second part of the tour goes right to left, from the rightmost point back to the leftmost, visiting the remaining points. You want to find a bitonic tour with minimum total length, using Euclidean distances.
 
 Your output is the lengths of the two parts of the tour, shortest first.
-
+```
 ### Input Format
 
 The first line is an integer:
@@ -223,3 +224,4 @@ The second part is [13, 12, 10, 5, 4, 3, 1, 0].
 
 The first part is [0, 2, 5, 6, 10, 11, 18, 21].
 The second part is [21, 20, 19, 17, 16, 15, 14, 13, 12, 9, 8, 7, 4, 3, 1, 0].
+```
