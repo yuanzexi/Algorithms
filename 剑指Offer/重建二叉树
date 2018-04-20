@@ -1,0 +1,55 @@
+输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+
+Solution: (java)
+```java
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        /*
+        Ideas:
+        1. The first of 'pre' gives the root of the tree
+        2. Given the root, use 'in' to partition left sub-tree and right sub-tree
+        3. recursively perform step 1&2
+        */
+        TreeNode root = null;
+        if (pre == null || in == null || pre.length != in.length || pre.length == 0){
+            return root;
+        }
+        root = new TreeNode(pre[0]);
+        if (pre.length > 1){
+            int index = -1;
+            for (int i = 0; i < in.length; i ++){
+                if (in[i] == root.val){
+                    index = i;
+                    break;
+                }
+            }
+            if (index >= 0){
+                //pre sub-tree
+                int[] left_pre = new int[index];
+                int[] right_pre = new int[pre.length - index - 1];
+                System.arraycopy(pre,1,left_pre,0,left_pre.length);
+                System.arraycopy(pre,index+1,right_pre,0,right_pre.length);
+                //in sub-tree
+                int[] left_in = new int[index];
+                int[] right_in = new int[in.length - index - 1];
+                System.arraycopy(in,0,left_in,0,left_in.length);
+                System.arraycopy(in,index+1,right_in,0,right_in.length);
+                //recursive
+                root.left = reConstructBinaryTree(left_pre,left_in);
+                root.right = reConstructBinaryTree(right_pre,right_in);
+            }
+            
+        }
+        return root;
+    }
+}
+```
